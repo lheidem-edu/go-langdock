@@ -155,8 +155,6 @@ func (c *Client) Do(req *http.Request, v any) error {
 			continue
 		}
 
-		fmt.Println(string(body))
-
 		if v != nil && len(body) > 0 {
 			if err := json.Unmarshal(body, v); err != nil {
 				last = err
