@@ -43,8 +43,8 @@ type ListKnowledgeFilesResponse struct {
 	Result []KnowledgeFile `json:"result"`
 }
 
-func (k *KnowledgeService) ListKnowledgeFiles(ctx context.Context, request *ListKnowledgeFilesRequest) (*ListKnowledgeFilesResponse, error) {
-	path := fmt.Sprintf("/knowledge/%s/list", request.FolderID)
+func (k *KnowledgeService) ListKnowledgeFiles(ctx context.Context, params *ListKnowledgeFilesRequest) (*ListKnowledgeFilesResponse, error) {
+	path := fmt.Sprintf("/knowledge/%s/list", params.FolderID)
 
 	req, err := k.Client.NewRequest(ctx, http.MethodGet, path, nil)
 	if err != nil {
@@ -70,16 +70,16 @@ type UploadKnowledgeFileResponse struct {
 	Result KnowledgeFile `json:"result"`
 }
 
-func (k *KnowledgeService) UploadKnowledgeFile(ctx context.Context, request *UploadKnowledgeFileRequest) (*UploadKnowledgeFileResponse, error) {
+func (k *KnowledgeService) UploadKnowledgeFile(ctx context.Context, params *UploadKnowledgeFileRequest) (*UploadKnowledgeFileResponse, error) {
 	var buf bytes.Buffer
 	writer := multipart.NewWriter(&buf)
 
-	part, err := writer.CreateFormFile("file", request.FileName)
+	part, err := writer.CreateFormFile("file", params.FileName)
 	if err != nil {
 		return nil, err
 	}
 
-	if _, err := io.Copy(part, request.Content); err != nil {
+	if _, err := io.Copy(part, params.Content); err != nil {
 		return nil, err
 	}
 
@@ -87,7 +87,7 @@ func (k *KnowledgeService) UploadKnowledgeFile(ctx context.Context, request *Upl
 		return nil, err
 	}
 
-	path := fmt.Sprintf("/knowledge/%s", request.FolderID)
+	path := fmt.Sprintf("/knowledge/%s", params.FolderID)
 	req, err := k.Client.NewRequest(ctx, http.MethodPost, path, &buf)
 	if err != nil {
 		return nil, err
