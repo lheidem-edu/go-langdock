@@ -11,9 +11,9 @@ import (
 )
 
 type Config struct {
-	// The API key used to authenticate requests.
+	// The API token used to authenticate requests.
 	// This is required.
-	APIKey string
+	APIToken string
 
 	// The base URL for the Langdock Knowledge API.
 	// The default value is "https://api.langdock.com".
@@ -37,7 +37,7 @@ type Client struct {
 
 func New(opts ...func(*Config)) *Client {
 	config := Config{
-		APIKey:     "",
+		APIToken:   "",
 		BaseURL:    "https://api.langdock.com",
 		MaxRetries: 3,
 	}
@@ -63,9 +63,9 @@ func New(opts ...func(*Config)) *Client {
 	return client
 }
 
-func WithAPIKey(apiKey string) func(*Config) {
+func WithAPIToken(apiToken string) func(*Config) {
 	return func(c *Config) {
-		c.APIKey = apiKey
+		c.APIToken = apiToken
 	}
 }
 
@@ -96,7 +96,7 @@ func (c *Client) NewRequest(ctx context.Context, method, path string, body io.Re
 	}
 
 	req.Header.Set("Accept", "application/json")
-	req.Header.Set("Authorization", fmt.Sprintf("Bearer %s", c.Config.APIKey))
+	req.Header.Set("Authorization", fmt.Sprintf("Bearer %s", c.Config.APIToken))
 
 	return req, nil
 }
