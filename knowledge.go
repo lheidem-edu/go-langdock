@@ -27,7 +27,7 @@ type KnowledgeFile struct {
 	MimeType   string    `json:"mimeType"`
 	CreatedAt  string    `json:"createdAt"`
 	UpdatedAt  string    `json:"updatedAt"`
-	URL        string    `json:"url"`
+	URL        *string   `json:"url"`
 	Path       *string   `json:"path,omitempty"`
 	SyncStatus *string   `json:"syncStatus,omitempty"`
 	PageCount  *int      `json:"pageCount,omitempty"`
